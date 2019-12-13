@@ -14,3 +14,9 @@ int conversion::hexToDecimal(string hex_value){				//Convert from hexadecimal to
 	ss >> hex >> res ;
 	return res;
 }
+
+void conversion::charToString(string& s, vector<char> tab, int size){		//Convert from vector<char> to string
+	for(int i = 0; i < size; i++){
+		s[i] = tab[i];
+	}
+}

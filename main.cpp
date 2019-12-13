@@ -1,5 +1,5 @@
 //to compile this program, a makefile has been made
-//to run this program: ./project ./"protein searched" ./uniprot_sprot.fasta
+//to run this program: ./project ./"protein searched" ./uniprot_sprot.fasta [MATRIX FILE] [GAP OPEN PENALTY] [GAP EXTENSION PENALTY]
 
 #include <iostream>
 #include <iomanip>
@@ -10,75 +10,75 @@
 using namespace std;
 
 #include "parameters.h"
-#include "indexSearch.h"
-#include "sequenceSearch.h"
-#include "headerSearch.h"
-#include "mapInit.h"
+#include "protein.h"
+#include "database.h"
+
+#include "algorithm.h"
+void charToString(string& s, vector<char> tab, int size){		//Convert from vector<char> to string
+	for(int i = 0; i < size; i++){
+		s[i] = tab[i];
+	}
+}
 
 int main(int argc, char **argv) {
 	
 	parameters verif;
-	indexSearch ind;
-	sequenceSearch s;
-	headerSearch head;
-	mapInit mapi;
+	protein prot;
+	database data;
 	
-	verif.verifParameters(argc, argv);			//verification of the number of parameters given in input
+	indeX ind;
+	sequence seq;
+	header head;
+
+	algorithm algo;
+
+	verif.verifParameters(argc, argv);					//verification of the number of parameters given in input
 	
-	string nameSequence = argv[2];
-	nameSequence.append(".psq");				//construction of the name of the sequence file in the database
+	ifstream proteinFile(argv[1]);						//opening proteinFile				
+	ifstream sequenceFile(verif.getNameSequence());		//opening sequenceFile				
+	ifstream indexFile(verif.getNameIndex());           //opening indexFile
+	ifstream headerFile(verif.getNameHeader());			//opening headerFile
+	ifstream matrixFile(verif.getNameMatrix());			//opening matrixFile
 	
-	string nameIndex = argv[2];
-	nameIndex.append(".pin");				//construction of the name of the index file in the database
+	int gapOpenPenalty = verif.getGapOpenPenalty();
+	int gapExtensionPenalty = verif.getGapExtensionPenalty();
 	
-	string nameHeader = argv[2];
-	nameHeader.append(".phr");				//construction of the name of the header file in the database
+	//Informations about the query
+	prot.fillProteinTable(proteinFile);
+	int sizeQueryProtein = prot.getProteinTableSize();
+	vector<int8_t> proteinTab = prot.getProteinTable();
 	
-	ifstream proteinFile(argv[1]);				//opening proteinFile				
-	ifstream sequenceFile(nameSequence);		//opening sequenceFile				
-	ifstream indexFile(nameIndex);              //opening indexFile
-	ifstream headerFile(nameHeader);			//opening headerFile
-	ifstream matrixFile("matrix_BLOSUM62.txt");
+	//Informations about the index
+	ind.indexReader(indexFile);
+	vector<int> seqOffset = ind.getSeqOffset();
+	vector<int> headOffset = ind.getHeaderOffset();	
 	
-	vector<int> tableauOffset(0);				//varaiables to keep information from the indexFile
-	vector<int> headerOffset(0);
-	vector<char> title;
-	vector<char> date;
-	vector<char> name;
-	int nbSeq, lmax, size, sizet, sized =0;
-	int64_t residu = 0;
+	//Informations about the sequence
+	seq.fillSequenceSize(ind.getSeqOffset());
+	vector<int> sequenceSize = seq.getSizeSequence();
 	
 	//Init the substitution matrix
-	unordered_map<string,int> matrixMap;
-	mapi.substiuteMatrix(matrixMap, matrixFile);
-	///////////////////////////// ON LIT LE DICO COMME ÇA ///////////////////////////////
-	cout << matrixMap["YF"] << endl;
-	
-	ind.indexReader(indexFile, &tableauOffset, &headerOffset, &nbSeq, &lmax, &residu, &title, &date, &sizet, &sized);		
+	algo.substiuteMatrix(matrixFile);	
 	
 	if(sequenceFile.is_open()) {
-		//search for a match between the query protein and the sequence file of the database
-		head.header_name(headerFile, s.sequenceMatch(proteinFile, sequenceFile, &tableauOffset), headerOffset, &name, &size); 
+		int *res = algo.sequenceMatch(sequenceFile, seqOffset, sizeQueryProtein, proteinTab, sequenceSize, gapOpenPenalty, gapExtensionPenalty);
+		algo.sequenceWithHighScore(res);
+		head.header_name(headerFile, algo.getOffsetMax(), headOffset);
 	}
 	
 	sequenceFile.close();
 	proteinFile.close();
+	indexFile.close();
+	headerFile.close();
+	matrixFile.close();
 	
-	string p(sizet,0);
-	for(int i = 0; i < sizet; i++){
-		p[i] = title[i];
-	}
+	//à mettre dans data.attributes();
 	
-	string d(sized,0);
-	for(int i = 0; i < sized; i++){
-		d[i] = date[i];
-	}
+	string p(ind.getLenTitle(),0);
+	charToString(p, ind.getTitle(), ind.getLenTitle());
 	
-	string n(size,0);
-	for(int i = 0; i < size; i++){
-		n[i] = name[i];
-	}
-	///////////////////////////////////////TO DO : accesseurs
+	string d(ind.getLenTime()-7,0);
+	charToString(d, ind.getTime(), ind.getLenTime()-7);
 	
 
 	ofstream result("./result.txt");		//return the result of the research into a file : result.txt
@@ -88,13 +88,18 @@ int main(int argc, char **argv) {
 		result << "Database time : ";
 		result << d << endl;
 		result << "Database size : ";
-		result << residu << " residues in " << nbSeq << " sequences"<< endl;
+		result << ind.getResidu() << " residues in " << ind.getNbSeq() << " sequences"<< endl;
 		result << "Longeset db sequence : ";
-		result << lmax << endl;
+		result << ind.getLenMax() << endl;
 		result << "\n\n" << endl;
-		result << "The matching protein is : \n" << n << endl;
-	}	
+		result << "50 best matching prots :                                                    Scores\n" << endl;
+		for (int i = 0; i< 50;i++){
+			result << head.getNames(i) << "...   " << algo.getScoreMax()[i] << endl;
+		}
+	}
 	
 	return(0);
 }
+
+
 

@@ -10,4 +10,5 @@ class conversion {
 	public :
 		string decToHex(int decimal);
 		int hexToDecimal(string hex_value);	
+		void charToString(string& s, vector<char> tab, int size);
 };

@@ -14,7 +14,6 @@ using namespace std;
 #include "database.h"
 
 #include "algorithm.h"
-
 void charToString(string& s, vector<char> tab, int size){		//Convert from vector<char> to string
 	for(int i = 0; i < size; i++){
 		s[i] = tab[i];
@@ -63,10 +62,8 @@ int main(int argc, char **argv) {
 	
 	if(sequenceFile.is_open()) {
 		int *res = algo.sequenceMatch(sequenceFile, seqOffset, sizeQueryProtein, proteinTab, sequenceSize, gapOpenPenalty, gapExtensionPenalty);
-		for(int i=0; i<seqOffset.size(); i++) {
-			cout << res[i] << endl;
-		}
-		//head.header_name(headerFile, algo.sequenceMatch(sequenceFile, seqOffset, sizeQueryProtein, proteinTab, sequenceSize), headOffset);
+		algo.sequenceWithHighScore(res);
+		head.header_name(headerFile, algo.getOffsetMax(), headOffset);
 	}
 	
 	sequenceFile.close();
@@ -83,8 +80,6 @@ int main(int argc, char **argv) {
 	string d(ind.getLenTime()-7,0);
 	charToString(d, ind.getTime(), ind.getLenTime()-7);
 	
-	string n(head.getSize(),0);
-	charToString(n, head.getName(), head.getSize());
 
 	ofstream result("./result.txt");		//return the result of the research into a file : result.txt
 	if(result){															
@@ -97,7 +92,10 @@ int main(int argc, char **argv) {
 		result << "Longeset db sequence : ";
 		result << ind.getLenMax() << endl;
 		result << "\n\n" << endl;
-		result << "The matching protein is : \n" << n << endl;
+		result << "50 best matching prots :                                              Scores\n" << endl;
+		for (int i = 0; i< 500;i++){
+			result << head.getNames(i) << "...   " << algo.getScoreMax()[i] << endl;
+		}
 	}
 	
 	return(0);

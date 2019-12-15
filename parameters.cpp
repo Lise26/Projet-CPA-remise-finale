@@ -27,7 +27,7 @@ int parameters::initParameters(int argc, char **argv) {
 	nameHeader = argv[2];
 	nameHeader.append(".phr");					//construction of the name of the header file in the database
 	
-	nameMatrix = "matrix_BLOSUM62.txt";
+	nameMatrix = "BLOSUM62";
 	
 	gapOpenPenalty = 11;
 	

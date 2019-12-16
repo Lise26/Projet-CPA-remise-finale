@@ -7,13 +7,13 @@ int parameters::verifParameters(int argc, char **argv) {
 	}
 	
 	if(argc > 3) {
-		if(argc = 4){
+		if(argc == 4){
 			initParameters(argc, argv);
 			nameMatrix = argv[3];
 			gapOpenPenalty = 11;
 			gapExtensionPenalty = 1;
 		}
-		else if(argc = 5){
+		else if(argc == 5){
 			initParameters(argc, argv);
 			nameMatrix = argv[3];
 			string gapOpen = argv[4];

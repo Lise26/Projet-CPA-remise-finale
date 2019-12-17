@@ -13,11 +13,11 @@ void algorithm::substituteMatrix(ifstream& matrixFile){		//this function is only
 	
 	map<string,int> dicoNumbers = {{"A",1},{"B",2},{"C",3},{"D",4},{"E",5},{"F",6},{"G",7},{"H",8},{"I",9},{"J",27},{"K",10},{"L",11},{"M",12},{"N",13},{"O",26},{"P",14},{"Q",15},{"R",16},{"S",17},{"T",18},{"U",24},{"V",19},{"W",20},{"X",21},{"Y",22},{"Z",23},{"*",25}};
 	
-	for (int i=0; i < 6; i++){								//select the 6 first lines of blosum file
+	for (int i=0; i < 6; i++){								//take the 6 first lines of blosum file
 		getline(matrixFile,line);
 	}
 	
-	matrixFile.ignore();									//pass these 6 lines
+	matrixFile.ignore();									//change the way the file is read
 	
 	for (int i=0; i < 24; i++){								//put the keys into a vector
 		matrixFile >> key;
@@ -110,18 +110,18 @@ void algorithm::sequenceWithHighScore(int* res) {			//Order the scores and their
 				int temp  = res[i];
 				res[i] = res[j];
 				res[j] = temp;
-				int temp2 = offsetMax[i];					//also order offsetTable to keep a correspondance between offsetTable and table of sequence maximums
+				int temp2 = offsetMax[i];					//also order offsetTable to keep a correspondance between the offset and its sequence
 				offsetMax[i] = offsetMax[j];
 				offsetMax[j] = temp2;
 			}
 		}
 	}
 	
-	for(int i=0; i<50; i++) {								//take the 50 better scores
+	for(int i=0; i<50; i++) {								//take the 50 higher scores
 		scoreMax[i] = res[i];
 	}
 	
-	for(int i = 0; i<50; i++){								//and the 50 offset of sequences with the better scores
+	for(int i = 0; i<50; i++){								//and the 50 offset of sequences with the higher scores
 		offMax[i] = offsetMax[i];		
 	}
 	

@@ -52,7 +52,6 @@ class algorithm {
 	
 	int *seqMax = 0;
 	int max = 0;
-	int *qMax = 0;
 	
 	int *scoreMatrix = 0;
 	int *E = 0;

@@ -70,6 +70,6 @@ class algorithm {
 		void sequenceWithHighScore(int* res);
 		
 		int const& getMatrixBl(int l, int c);
-		int* const getScoreMax();
-		int* const getOffsetMax();
+		int* const& getScoreMax();
+		int* const& getOffsetMax();
 };

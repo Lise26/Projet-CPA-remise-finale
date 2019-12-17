@@ -1,11 +1,11 @@
 #include "indeX.h"
 
-inline void indeX::littleBigEndian (int &x) {
+inline void indeX::littleBigEndian (int &x) {		//Change the endianness of the byte (big to little)
 	x = ((x >> 24) & 0xffL) | ((x >> 8) & 0xff00L) | ((x << 8) & 0xff0000L) | ((x << 24) & 0xff000000L);
 }
 
-void indeX::readFile(ifstream& file, int& value, int multiple, int type){    //type = 0 : same as value, 1 : int, 2 : char
-	if(type == 0)
+void indeX::readFile(ifstream& file, int& value, int multiple, int type){    	//Read the .pin file
+	if(type == 0)								//type = 0 : same as value, 1 : int, 2 : char
 		file.read ((char *)&value, multiple*sizeof(value));
 	else if(type == 1)
 		file.read ((char *)&value, multiple*sizeof(int));
@@ -16,39 +16,39 @@ void indeX::readFile(ifstream& file, int& value, int multiple, int type){    //t
 
 int indeX::indexReader(ifstream& indexFile){
 	
-	readFile(indexFile, version, 1, 0);
+	readFile(indexFile, version, 1, 0);	//Version of the database
 	
-	readFile(indexFile, type, 1, 0);
+	readFile(indexFile, type, 1, 0);	//Type of the database : 0-DNA, 1-Protein
 	
-	readFile(indexFile, lenTitle, 1, 0);
+	readFile(indexFile, lenTitle, 1, 0);	//Length of the title string
 		
-	char titleC[lenTitle];		
+	char titleC[lenTitle];			//Title of the database
 	indexFile.read ((char *)&titleC, lenTitle*sizeof(char));
 	for(int i = 0; i < lenTitle; i++){
 		title.push_back(titleC[i]);
 	}
 	
-	readFile(indexFile, lenTime, 1, 0);
+	readFile(indexFile, lenTime, 1, 0);	//Length of the timestamp string
 		
-	char tstamp[lenTime];		
+	char tstamp[lenTime];			//Timestamp
 	indexFile.read ((char *)&tstamp, lenTime*sizeof(char));
 	for(int i = 0; i < lenTime; i++){
 		time.push_back(tstamp[i]);
 	}
 	
-	readFile(indexFile, nbSeq, 1, 0);
+	readFile(indexFile, nbSeq, 1, 0);	//Number of sequences in the database
 		
-	indexFile.read ((char *)&residu, sizeof(residu));
+	indexFile.read ((char *)&residu, sizeof(residu));	//Total number of residues in the database
 	
-	readFile(indexFile, lenMax, 1, 0);	
+	readFile(indexFile, lenMax, 1, 0);	//Length of the longest sequence in the database
 		
-	int headerOff[nbSeq+1];
+	int headerOff[nbSeq+1];			//Offsets into the sequence’s header file
 	for(int i=0; i < (nbSeq+1); i++){
 		readFile(indexFile, headerOff[i], 1, 1);
 		headOffset.push_back(headerOff[i]);
 	}
 	
-	int seqOff[nbSeq+1];
+	int seqOff[nbSeq+1];			//Offsets into the sequence’s residue file
 	for(int i=0; i < (nbSeq+1); i++){
 		readFile(indexFile, seqOff[i], 1, 1);
 		seqOffset.push_back(seqOff[i]);
@@ -59,27 +59,27 @@ int indeX::indexReader(ifstream& indexFile){
 
 //GETTERS
 
-int indeX::getVersion() const {
+int indeX::getVersion() const& {
 	return version;
 }
 
-int indeX::getLenTitle() const {
+int indeX::getLenTitle() const& {
 	return lenTitle;
 }
 
-int indeX::getLenTime() const {
+int indeX::getLenTime() const& {
 	return lenTime;
 }
 
-int indeX::getNbSeq() const {
+int indeX::getNbSeq() const& {
 	return nbSeq;
 }
 
-int64_t indeX::getResidu() const {
+int64_t indeX::getResidu() const& {
 	return residu;
 }
 
-int indeX::getLenMax() const {
+int indeX::getLenMax() const& {
 	return lenMax;
 }
 

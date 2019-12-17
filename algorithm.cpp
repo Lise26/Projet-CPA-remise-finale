@@ -137,10 +137,10 @@ int const& algorithm::getMatrixBl(int l, int c){
 	return matrixBl[l][c];
 }
 
-int* const algorithm::getScoreMax(){
+int* const& algorithm::getScoreMax(){
 	return scoreMax;
 }
-int* const algorithm::getOffsetMax(){
+int* const& algorithm::getOffsetMax(){
 	return offMax;
 }
 

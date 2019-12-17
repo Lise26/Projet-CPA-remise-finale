@@ -1,6 +1,6 @@
 #include "header.h"
 
-void header::header_name(ifstream& headerFile, int* offMax, vector<int> headerOffset){ // Init values of parameters by reading the header file
+void header::header_name(ifstream& headerFile, int* offMax, vector<int> headerOffset){ // Find the names of the given sequences by reading the header file
 	int stock = 0;										//Each byte will be stored there
 	string previous = "0";								//Keep the previous byte
 	string before_last = "0";							//Keep the before last byte
@@ -17,7 +17,7 @@ void header::header_name(ifstream& headerFile, int* offMax, vector<int> headerOf
 					char* title = new char[stock+2];
 					headerFile.read((char *)&*title, stock+2);
 					i+= (stock+2);
-					if(title[0] == 's' && title[1] == 'p'){
+					if(title[0] == 's' && title[1] == 'p'){			//Read the complete name of the protein 
 						if(stock>60)
 							stock = 60;
 						for(int i = 0; i < stock+2; i++){
@@ -76,6 +76,6 @@ vector<char> const& header::getName() {
 	return name;
 }
 
-string* const header::getNames(){
+string* const& header::getNames(){
 	return names;
 }

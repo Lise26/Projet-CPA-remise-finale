@@ -76,6 +76,6 @@ vector<char> const& header::getName() {
 	return name;
 }
 
-string* const& header::getNames(){
+string* const header::getNames(){
 	return names;
 }

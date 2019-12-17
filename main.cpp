@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 	algo.substituteMatrix(matrixFile);	
 	
 	if(sequenceFile.is_open()) {
-		int* res = algo.sequenceMatch(sequenceFile, seqOffset, sizeQueryProtein, proteinTab, gapOpenPenalty, gapExtensionPenalty);  //maximum scores of each sequence
+		int* res = algo.researchScore(sequenceFile, seqOffset, sizeQueryProtein, proteinTab, gapOpenPenalty, gapExtensionPenalty);  //maximum scores of each sequence
 		algo.sequenceWithHighScore(res);  //order offsets and maximums
 		int *off = algo.getOffsetMax();
 		head.header_name(headerFile, off, headOffset);  //take name of the sequences thanks to their offset

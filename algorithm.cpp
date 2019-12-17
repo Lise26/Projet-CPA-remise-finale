@@ -31,7 +31,7 @@ void algorithm::substituteMatrix(ifstream& matrixFile){
 	}
 }
 
-int* algorithm::sequenceMatch(ifstream &sequenceFile, vector<int> &tableauOffset, int &sizeQueryProtein, vector<int8_t> &proteinTab, int &gapOpenPenalty, int &gapExtensionPenalty) {
+int* algorithm::researchScore(ifstream &sequenceFile, vector<int> &tableauOffset, int &sizeQueryProtein, vector<int8_t> &proteinTab, int &gapOpenPenalty, int &gapExtensionPenalty) {
 	
 	sizeQuery = sizeQueryProtein;
 	
@@ -53,14 +53,14 @@ int* algorithm::sequenceMatch(ifstream &sequenceFile, vector<int> &tableauOffset
 		E = new int [2*(sizeQuery+1)];
 		F = new int [2*(sizeQuery+1)];
 			
-		checkSequence(sequenceFile.seekg(offset), proteinTab, it);
+		algo(sequenceFile.seekg(offset), proteinTab, it);
 		it++;
 	}
 	
 	return seqMax;  //returns a table with maximum score of each sequence
 }
 
-void algorithm::checkSequence(istream& sequenceFile, vector<int8_t>& proteinTab, int it){    //algorithm
+void algorithm::algo(istream& sequenceFile, vector<int8_t>& proteinTab, int it){    //algorithm
 	
 	for(int m=0; m<2; m++) {
 		for (int j = 0; j < sizeQuery+1; j++) {

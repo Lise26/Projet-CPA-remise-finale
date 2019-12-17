@@ -34,16 +34,13 @@ class algorithm {
 	int scoreMax[50];
 	int offMax[50];
 	
-	int* seqWithHighScore = 0;
-	int* orderedOffset = 0;
-	
 	int blossum = getMatrixBl(28,28);
 	
 	public :
 		void substituteMatrix(ifstream& matrixFile);
 		int init(int* &H, int* &E, int &S, int &F);
-		int* sequenceMatch(ifstream &sequenceFile, vector<int> &tableauOffset, int &sizeQueryProtein, vector<int8_t> &proteinTab, int &gapOpenPenalty, int &gapExtensionPenalty);
-		void checkSequence(istream& sequenceFile, vector<int8_t>& proteinTab, int it);
+		int* researchScore(ifstream &sequenceFile, vector<int> &tableauOffset, int &sizeQueryProtein, vector<int8_t> &proteinTab, int &gapOpenPenalty, int &gapExtensionPenalty);
+		void algo(istream& sequenceFile, vector<int8_t>& proteinTab, int it);
 		void sequenceWithHighScore(int* res);
 		
 		int const& getMatrixBl(int l, int c);

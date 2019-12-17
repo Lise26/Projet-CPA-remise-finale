@@ -19,10 +19,10 @@ class parameters {
 		int initOptionalParametersDefault(int argc, char **argv);
 		int initOptionalParametersAll(int argc, char **argv);
 		
-		string getNameSequence() const;
-		string getNameIndex() const;
-		string getNameHeader() const;
-		string getNameMatrix() const;
-		int getGapOpenPenalty() const;
-		int getGapExtensionPenalty() const;
+		string getNameSequence() const&;
+		string getNameIndex() const&;
+		string getNameHeader() const&;
+		string getNameMatrix() const&;
+		int getGapOpenPenalty() const&;
+		int getGapExtensionPenalty() const&;
 };

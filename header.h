@@ -20,6 +20,6 @@ class header {
 		int info(ofstream &result, int *score);
 		int const& getSize();
 		vector<char> const& getName();
-		string* const getNames();	
+		string* const& getNames();	
 };
 	

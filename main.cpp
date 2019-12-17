@@ -1,6 +1,3 @@
-//to compile this program, a makefile has been made
-//to run this program: ./project ./"protein searched" ./uniprot_sprot.fasta [MATRIX FILE] [GAP OPEN PENALTY] [GAP EXTENSION PENALTY]
-
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -27,6 +24,7 @@ int main(int argc, char **argv) {
 
 	verif.verifParameters(argc, argv);						//verification of the number of parameters given in input
 	
+	//Open files
 	ifstream proteinFile(argv[1]);							//opening proteinFile				
 	ifstream sequenceFile(verif.getNameSequence());			//opening sequenceFile				
 	ifstream indexFile(verif.getNameIndex());           	//opening indexFile
@@ -61,20 +59,21 @@ int main(int argc, char **argv) {
 	algo.substituteMatrix(matrixFile);	
 	
 	if(sequenceFile.is_open()) {
-		int* res = algo.sequenceMatch(sequenceFile, seqOffset, sizeQueryProtein, proteinTab, gapOpenPenalty, gapExtensionPenalty);
-		algo.sequenceWithHighScore(res);
+		int* res = algo.sequenceMatch(sequenceFile, seqOffset, sizeQueryProtein, proteinTab, gapOpenPenalty, gapExtensionPenalty);  //maximum scores of each sequence
+		algo.sequenceWithHighScore(res);  //order offsets and maximums
 		int *off = algo.getOffsetMax();
-		head.header_name(headerFile, off, headOffset);
+		head.header_name(headerFile, off, headOffset);  //take name of the sequences thanks to their offset
 	}
-
+	
+	//Close files
 	sequenceFile.close();
 	proteinFile.close();
 	indexFile.close();
 	headerFile.close();
 	matrixFile.close();
 	
-	int *score = algo.getScoreMax();
-	string *names = head.getNames();
+	int *score = algo.getScoreMax();  //maximums scores of each sequence
+	string *names = head.getNames();  //names of sequences with high scores
 	
 	datab.attributes(score, title, time, lenTitle, lenTime, residu, numbSeq, lenMax, names);
 	

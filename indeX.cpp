@@ -59,27 +59,27 @@ int indeX::indexReader(ifstream& indexFile){
 
 //GETTERS
 
-int indeX::getVersion() const& {
+int const& indeX::getVersion() {
 	return version;
 }
 
-int indeX::getLenTitle() const& {
+int const& indeX::getLenTitle() {
 	return lenTitle;
 }
 
-int indeX::getLenTime() const& {
+int const& indeX::getLenTime() {
 	return lenTime;
 }
 
-int indeX::getNbSeq() const& {
+int const& indeX::getNbSeq() {
 	return nbSeq;
 }
 
-int64_t indeX::getResidu() const& {
+int64_t const& indeX::getResidu() {
 	return residu;
 }
 
-int indeX::getLenMax() const& {
+int const& indeX::getLenMax() {
 	return lenMax;
 }
 

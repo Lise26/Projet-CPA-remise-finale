@@ -19,12 +19,12 @@ class indeX {
 		int indexReader(ifstream& indexFile);	
 		void readFile(ifstream& file, int& value, int multipe, int type);
 		
-		int getVersion() const;
-		int getLenTitle() const;
-		int getLenTime() const;
-		int getNbSeq() const;
-		int64_t getResidu() const;
-		int getLenMax() const;
+		int const& getVersion();
+		int const& getLenTitle();
+		int const& getLenTime();
+		int const& getNbSeq();
+		int64_t const& getResidu();
+		int const& getLenMax();
 		
 		vector<int> const& getHeaderOffset();
 		vector<int>const& getSeqOffset();

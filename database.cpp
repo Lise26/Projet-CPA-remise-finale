@@ -10,7 +10,7 @@ int database::attributes(ofstream &result, vector<char> title, vector<char> time
 	conv.charToString(d, time, lenTime-7);					//conversion : char to string 
 
 	if(result){	
-		result << "Protein Sequence Alignement using the Smith-Watermann Algorithm\n\n" << endl;  														
+		result << "Protein Sequence Alignement using the Smith-Waterman Algorithm\n\n" << endl;  														
 		result << "Database title : ";
 		result << p << endl;
 		result << "Database time : ";

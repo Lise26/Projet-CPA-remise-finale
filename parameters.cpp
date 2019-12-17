@@ -71,26 +71,26 @@ int parameters::initOptionalParametersAll(int argc, char **argv) {		//initialise
 
 //GETTERS
 
-string parameters::getNameSequence() const {
+string parameters::getNameSequence() const& {
 	return nameSequence;
 }
 
-string parameters::getNameIndex() const{
+string parameters::getNameIndex() const&{
 	return nameIndex;
 }
 
-string parameters::getNameHeader() const{
+string parameters::getNameHeader() const&{
 	return nameHeader;
 }
 
-string parameters::getNameMatrix() const{
+string parameters::getNameMatrix() const&{
 	return nameMatrix;
 }
 
-int parameters::getGapOpenPenalty() const{
+int parameters::getGapOpenPenalty() const&{
 	return gapOpenPenalty;
 }
 
-int parameters::getGapExtensionPenalty() const{
+int parameters::getGapExtensionPenalty() const&{
 	return gapExtensionPenalty;
 }
